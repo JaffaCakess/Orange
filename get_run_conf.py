@@ -32,4 +32,3 @@ for line in f:
     output = tn.read_all()
     with open("switch" + HOST, "w") as saveoutput:
         saveoutput.write(output)
-f.close()
