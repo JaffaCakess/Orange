@@ -1,0 +1,28 @@
+# add loopback interfaces
+---
+- hosts: all
+  gather_facts: no
+  remote_user: cumulus
+  vars:
+    spine1:
+      loopback: "1.1.1.1"
+      ospf_area: "0.0.0.1"
+    spine2:
+      loopback: "2.2.2.2"
+      ospf_area: "0.0.0.2"
+    leaf1:
+      loopback: "3.3.3.3"
+      ospf_area: "0.0.0.3"
+    leaf2:
+      loopback: "4.4.4.4"
+      ospf_area: "0.0.0.4"
+  tasks:
+  - name: add loopback interfaces
+    nclu:
+      template: |
+              {% set lo = vars[inventory_hostname].loopback -%}
+              add loopback lo ip address {{lo}}/32
+              add ospf network {{lo}}/32 area {{vars[inventory_hostname].ospf_area}}
+      commit: true
+      description: "Ansible - add loopbacks"
+...

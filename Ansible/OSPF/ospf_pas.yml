@@ -1,0 +1,22 @@
+# Advertise ospf networks
+---
+- hosts: all
+  gather_facts: no
+  remote_user: cumulus 
+  tasks:
+  - name: advertise ospf networks
+    nclu:
+      commands: add ospf network 10.1.1.0/24 area 0.0.0.0
+    commit: true
+    description: "Ansible - backbone network"
+
+- hosts: leaf
+  gather_facts: no
+  remote_user: cumulus
+  tasks:
+    - name: configure passive interfaces
+      nclu:
+        commands: add ospf passive-interface swp3
+      commit: true
+      description: "Ansible - passive interfaces"
+...

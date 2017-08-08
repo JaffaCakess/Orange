@@ -1,0 +1,18 @@
+# To configure an unnumbered interface, take the IP address of another
+# interface (called the anchor) and use that as the IP address of the
+# unnumbered interface:
+---
+- hosts: spine1
+  gather_facts: no
+  remote_user: cumulus
+  tasks:
+  - name: configure unnumbered ospf int
+    nclu:
+      commands:
+          - add loopback lo ip address 192.0.2.1/32
+          - add int swp1 ip address 192.0.2.1/32
+          - add int swp2 ip address 192.0.2.1/32
+          - add int swp1 ospf area 0.0.0.1
+      commit: true
+      description: "Ansible - unnumbered int"
+...

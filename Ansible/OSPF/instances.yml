@@ -1,0 +1,14 @@
+# ospf instances example
+---
+- hosts: spine1
+  gather_facts: no
+  remote_user: root
+  tasks:
+  - name: add ospf_instances to daemon file
+    template: src=~/playbooks/nclu/OSPF/Templates/ospf_instances.j2
+              dest=/etc/quagga/daemons
+    notify: restart quagga
+  handlers:
+    - name: restart quagga
+      command: systemctl restart quagga
+...

@@ -1,0 +1,13 @@
+---
+- hosts: spine1
+  gather_facts: no
+  remote_user: cumulus
+  tasks:
+  - name: configure total stub area
+    nclu:
+      commands:
+          - add ospf area 0.0.0.1 stub
+          - add ospf area 0.0.0.1 stub no-summary
+      commit: true
+      description: "Ansible - Total stub"
+...
