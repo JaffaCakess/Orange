@@ -1,0 +1,23 @@
+---
+- hosts: leaf
+  gather_facts: no
+  remote_user: cumulus
+  vars:
+    leaf1:
+      ip: "192.168.1.1/24"
+      vlan: "100"
+    leaf2:
+      ip: "192.168.2.1/24"
+      vlan: "200"
+  tasks:
+  - name: configure portfast
+    nclu:
+      template: |
+              {% set vlan = vars[inventory_hostname].vlan -%}
+              add vlan {{vlan}} ip address {{vars[inventory_hostname].ip}}
+              add int swp3 bridge access {{vlan}}
+              add int swp3 stp bpduguard
+              add int swp3 stp portadminedge
+      commit: true
+      description: "Ansible - configure edgeports"
+...
