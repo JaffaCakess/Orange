@@ -4,8 +4,8 @@ import paramiko
 import time
 
 ip_address = "192.168.122.82"
-username = "Ben"
-password = "CCNP"
+username = "ben"
+password = "cisco"
 
 ssh_client = paramiko.SSHClient()
 ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
