@@ -1,0 +1,14 @@
+---
+- hosts: spine1
+  gather_facts: no
+  remote_user: root
+  tasks:
+  - name: configure daemons
+    template: src=~/playbooks/nclu/daemons
+              dest=/etc/quagga/daemons
+    notify:
+    - restart networking
+  handlers:
+    - name: restart networking
+      service: name=networking state=restarted
+...
