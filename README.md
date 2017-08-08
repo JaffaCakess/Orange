@@ -1,5 +1,5 @@
 # Orange
-Network Programming in Python (Cisco IOS, Ansible, Netmiko, NAPALM, Pyntc)
+Network Programming in Python (Ansible, Netmiko, Paramiko, NAPALM, Pyntc)
 
 Fully tested in GNS3 environment.
 
