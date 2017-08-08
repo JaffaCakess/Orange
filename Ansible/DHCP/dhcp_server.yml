@@ -1,0 +1,27 @@
+---
+- hosts: leaf
+  gather_facts: no
+  remote_user: root
+  vars:
+    leaf1:
+      subnet: "192.168.1.0"
+      range: "192.168.1.2 192.168.1.254"
+      port: "vlan100"
+      src: "192.168.1.1"
+    leaf2:
+      subnet: "192.168.2.0"
+      range: "192.168.2.2 192.168.2.254"
+      port: "vlan200"
+      src: "192.168.2.1"
+  tasks:
+  - name: configure dhcpd.conf file
+    template: src=~/playbooks/nclu/DHCP/Templates/conf_dhcp_file.j2
+              dest=/etc/dhcp/dhcpd.conf
+
+  - name: specify listening interface
+    template: src=~/playbooks/nclu/DHCP/Templates/isc_dhcp_server.j2
+              dest=/etc/default/isc-dhcp-server
+
+  - name: enable dhcpd.service
+    raw: systemctl enable dhcpd.service
+...
