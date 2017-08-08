@@ -1,0 +1,11 @@
+# configured by Ansible
+ddns-update-style none;
+
+default-lease-time 600;
+max-lease-time 7200;
+option domain-name-servers {{vars[inventory_hostname].swp3_addr}};
+
+subnet {{vars[inventory_hostname].ospf_net}} netmask 255.255.255.0 {
+	range {{vars[inventory_hostname].range}};
+        option routers {{vars[inventory_hostname].swp3_addr}};
+}
