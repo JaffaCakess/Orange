@@ -1,3 +1,4 @@
+# Used with main.py
 
 def security(parser, errors):
 	errors["security"] = []
@@ -11,8 +12,6 @@ def security(parser, errors):
 		errors["security"].append(obj.text.strip("\n") + " has privilege level 15")
 	for obj in parser.find_lines(r"privilege 15"):
 		errors["security"].append(obj.strip("\n"))
-	#if parser.find_objects(r"no\sip\shttp\sserver"):
-		
 
 def router(parser, errors):
 	errors["router"] = []
