@@ -1,0 +1,50 @@
+{
+	"class": "AS3",
+	"action": "deploy",
+	"persist": true,
+	"declaration": {
+		"class": "ADC",
+		"schemaVersion": "3.25.0",
+		"id": "Troubleshooting-labs",
+		"label": "Task 4",
+		"remark": "translate server address/port is disabled",
+		"target": {
+			"hostname": "bigip01.example.com"
+		},
+		"Task-4": {
+			"class": "Tenant",
+			"Tshoot": {
+				"class": "Application",
+				"webApp_vs": {
+					"class": "Service_HTTP",
+					"virtualAddresses": [
+						"10.255.34.104"
+					],
+					"virtualPort": 80,
+					"profileTCP": "wan",
+					"profileHTTP": "basic",
+					"snat": "auto",
+					"pool": "Web_Servers",
+					"persistenceMethod": "cookie",
+					"translateServerAddress": false,
+					"translateServerPort": false
+				},
+				"Web_Servers": {
+					"class": "Pool",
+					"monitors": [
+						"http"
+					],
+					"members": [
+						{
+							"servicePort": 80,
+							"serverAddresses": [
+								"10.255.33.182"
+							],
+							"shareNodes": true
+						}
+					]
+				}
+			}
+		}
+	}
+}

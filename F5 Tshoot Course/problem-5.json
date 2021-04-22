@@ -1,0 +1,54 @@
+{
+	"class": "AS3",
+	"action": "deploy",
+	"persist": true,
+	"declaration": {
+		"class": "ADC",
+		"schemaVersion": "3.25.0",
+		"id": "Troubleshooting-labs",
+		"label": "Task 5",
+		"remark": "health monitor missing Host header for HTTP/1.1",
+		"target": {
+			"hostname": "bigip01.example.com"
+		},
+		"Task-5": {
+			"class": "Tenant",
+			"Tshoot": {
+				"class": "Application",
+				"webApp_vs": {
+					"class": "Service_HTTP",
+					"virtualAddresses": [
+						"10.255.34.105"
+					],
+					"virtualPort": 80,
+					"profileTCP": "lan",
+					"profileHTTP": "basic",
+					"snat": "auto",
+					"pool": "Web_Servers",
+					"persistenceMethod": "cookie"
+				},
+				"custom_http": {
+					"class": "Monitor",
+					"monitorType": "http",
+					"send": "GET /index.html HTTP/1.1\r\n\r\n",
+					"receive": "200 OK"
+				},
+				"Web_Servers": {
+					"class": "Pool",
+					"monitors": [{
+						"use": "custom_http"
+					}],
+					"members": [
+						{
+							"servicePort": 80,
+							"serverAddresses": [
+								"10.255.33.182"
+							],
+							"shareNodes": true
+						}
+					]
+				}
+			}
+		}
+	}
+}

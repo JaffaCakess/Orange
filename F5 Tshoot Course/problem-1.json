@@ -1,0 +1,56 @@
+{
+	"class": "AS3",
+	"action": "deploy",
+	"declaration": {
+		"class": "ADC",
+		"schemaVersion": "3.25.0",
+		"id": "Troubleshooting-labs",
+		"label": "Task 1",
+		"remark": "Health monitor disable recv string",
+		"target": {
+			"hostname": "bigip01.example.com"
+		},
+		"Task-1": {
+			"class": "Tenant",
+			"Task-1": {
+				"class": "Application",
+				"webApp_vs": {
+					"class": "Service_HTTP",
+					"virtualAddresses": [
+						"10.255.34.101"
+					],
+					"virtualPort": 80,
+					"profileTCP": "lan",
+					"profileHTTP": "basic",
+					"profileMultiplex": "basic",
+					"profileHTTPCompression": "basic",
+					"snat": "auto",
+					"pool": "Web_Servers",
+					"persistenceMethod": "cookie"
+				},
+				"custom_http": {
+					"class": "Monitor",
+					"monitorType": "http",
+					"send": "GET /index.php HTTP/1.0\r\n\r\n",
+					"receive": "200 OK",
+					"receiveDown": "404 Not Found"
+				},
+				"Web_Servers": {
+					"class": "Pool",
+					"monitors": [{
+						"use": "custom_http"
+					}],
+					"members": [
+						{
+							"servicePort": 80,
+							"serverAddresses": [
+								"10.255.33.182"
+							],
+							"shareNodes": true
+						}
+					]
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,53 @@
+{
+	"class": "AS3",
+	"action": "deploy",
+	"persist": true,
+	"declaration": {
+		"class": "ADC",
+		"schemaVersion": "3.25.0",
+		"id": "Troubleshooting-labs",
+		"label": "Task 6",
+		"remark": "iRule multiple redirect invocations",
+		"target": {
+			"hostname": "bigip01.example.com"
+		},
+		"Task-6": {
+			"class": "Tenant",
+			"Tshoot": {
+				"class": "Application",
+				"webApp_vs": {
+					"class": "Service_HTTP",
+					"virtualAddresses": [
+						"10.255.34.106"
+					],
+					"virtualPort": 80,
+					"profileTCP": "lan",
+					"profileHTTP": "basic",
+					"snat": "auto",
+					"pool": "Web_Servers",
+					"persistenceMethod": "cookie",
+                    "iRules": ["redirect_rule"]
+				},
+				"Web_Servers": {
+					"class": "Pool",
+					"monitors": [
+						"http"
+                    ],
+					"members": [
+						{
+							"servicePort": 80,
+							"serverAddresses": [
+								"10.255.33.184"
+							],
+							"shareNodes": true
+						}
+					]
+				},
+                "redirect_rule": {
+                    "class": "iRule",
+                    "iRule": "when HTTP_REQUEST {\n     if { [HTTP::uri] eq '/' } then {\n         HTTP::redirect www.example.com/index.html\n     }\n     if { [HTTP::uri] eq '/test2' } then {\n         HTTP::redirect www.example.com/demo-index.html\n    }\n}"                 
+                }
+			}
+		}
+	}
+}
